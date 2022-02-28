@@ -1,4 +1,4 @@
-# gatsby-rebuild-webhook
+# gatsby-webhooks
 Customizable toolkit of webhooks for Gatsby websites.
 
 ### Requirements
