@@ -1,2 +1,4 @@
 # gatsby-rebuild-webhook
-Automatic, customizable rebuild of a Gatsby website triggered by a webhook. Based on Node/Express.js.
+Automatic and customizable rebuild of a Gatsby website triggered by a webhook. Based on Node and Express.js.
+
+Requirements: inherited from Gatsby.
