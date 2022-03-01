@@ -21,8 +21,9 @@ const quickRebuildSequence = [
 // You can also create your custom callback terminal sequences...
 
 // Routing (Gatsby Update/Re-build sequences) //
-createGatsbyWebhook('/clean_gatsby_rebuild/', cleanRebuildSequence)
-createGatsbyWebhook('/quick_gatsby_rebuild/', quickRebuildSequence)
+// Default delay is 120s = build will trigger only after inactivity for 2 minutes, to not repeat the same thing multiple times.
+createGatsbyWebhook('/clean_gatsby_rebuild/', cleanRebuildSequence, 120000)
+createGatsbyWebhook('/quick_gatsby_rebuild/', quickRebuildSequence, 120000)
 // You can also create custom webhook callbacks with your custom sequences...
 
 
@@ -32,11 +33,21 @@ createGatsbyWebhook('/quick_gatsby_rebuild/', quickRebuildSequence)
 /* FUNCTION: Create Gatsby webhook route.
     endpoint(string) "/test/" - endpoint path
     sequence(array) [string, ...] - callback commands, will be executed synchronously in order, same as "commands" in runSequence()
+    delay(int) - delay in ms. The action will be fired only after inactivity of receiving the same request within delay period.
 */
-function createGatsbyWebhook(endpoint, sequence){
+function createGatsbyWebhook(endpoint, sequence, delay = 0){
     gatsbyWebhookHelper.post( endpoint, ( req, res ) => {
-        runSequence(sequence);
-        res.sendStatus( 200 );
+        if(ongoing_process === false) {
+            console.log("Initializing a Webhook sequence.");
+            ongoing_process = true;
+            if(runSequence(sequence)){
+                res.sendStatus( 200 );
+            } else {
+                res.sendStatus ( 403 );
+            }
+        } else {
+            console.log ('Sorry, already running a sequence. Try again in few minutes.');
+        }  
     });
     
 }
@@ -45,14 +56,12 @@ function createGatsbyWebhook(endpoint, sequence){
     commands(array) [string, ...] - callback commands, will be executed synchronously in order.
 */
 function runSequence (commands=false){
-    if(commands === false || ongoing_process === true) return false;
+    if(commands === false) return false;
 
-    console.log("Initializing a Webhook sequence.");
-    ongoing_process = true;
     var commandArr = [...commands];
     let newCommand = commandArr[0];
     commandArr.shift();
-
+    console.log('Running "'+newCommand+'"');
     // Execute terminal command
     if (!newCommand || newCommand.trim() === "") return false;
 
@@ -69,8 +78,10 @@ function runSequence (commands=false){
         if (commandArr.length>0) {
             runSequence(commandArr);
         } else {
-            console.log("Webhook callback sequence Completed.");
+            // declare finished process after completed sequence
             ongoing_process = false;
+            console.log(ongoing_process);
+            console.log("Webhook callback sequence Completed.");
         }
     });
 
