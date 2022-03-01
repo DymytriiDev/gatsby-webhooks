@@ -1,5 +1,5 @@
 # gatsby-webhooks
-Customizable toolkit of webhooks for Gatsby websites.
+Customizable webhook catcher for Gatsby websites.
 
 ### Requirements
 - Gatsby
