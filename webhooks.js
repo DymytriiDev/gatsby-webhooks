@@ -23,7 +23,7 @@ const quickRebuildSequence = [
 // Routing (Gatsby Update/Re-build sequences) //
 // Default delay is 120s = build will trigger only after inactivity for 2 minutes, to not repeat the same thing multiple times.
 createGatsbyWebhook('/clean_gatsby_rebuild/', cleanRebuildSequence, 120000)
-createGatsbyWebhook('/quick_gatsby_rebuild/', quickRebuildSequence, 120000)
+createGatsbyWebhook('/quick_gatsby_rebuild/', quickRebuildSequence, 30000)
 // You can also create custom webhook callbacks with your custom sequences...
 
 
@@ -35,16 +35,16 @@ createGatsbyWebhook('/quick_gatsby_rebuild/', quickRebuildSequence, 120000)
     sequence(array) [string, ...] - callback commands, will be executed synchronously in order, same as "commands" in runSequence()
     delay(int) - delay in ms. The action will be fired only after inactivity of receiving the same request within delay period.
 */
-function createGatsbyWebhook(endpoint, sequence, delay = 0){
+function createGatsbyWebhook(endpoint, sequence, delay = 15000){
     gatsbyWebhookHelper.post( endpoint, ( req, res ) => {
         if(ongoing_process === false) {
             console.log("Initializing a Webhook sequence.");
             ongoing_process = true;
-            if(runSequence(sequence)){
-                res.sendStatus( 200 );
-            } else {
-                res.sendStatus ( 403 );
-            }
+            console.log("Countdown of "+delay+"ms started...");
+             
+            setTimeout(()=>{runSequence(sequence)}, delay);
+            res.sendStatus( 200 );
+
         } else {
             console.log ('Sorry, already running a sequence. Try again in few minutes.');
         }  
