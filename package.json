@@ -1,0 +1,29 @@
+{
+  "name": "gatsby-webhooks",
+  "version": "0.1.0",
+  "description": "Customizable webhook catcher for Gatsby websites.",
+  "main": "webhooks.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DymytriiLynx/gatsby-webhooks.git"
+  },
+  "keywords": [
+    "gatsby",
+    "expressjs",
+    "webhooks-catcher",
+    "gatsbyjs",
+    "gatsby-plugin"
+  ],
+  "author": "Dymytrii Ishchuk",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/DymytriiLynx/gatsby-webhooks/issues"
+  },
+  "homepage": "https://github.com/DymytriiLynx/gatsby-webhooks#readme",
+  "dependencies": {
+    "express": "latest"
+  }
+}

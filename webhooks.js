@@ -80,7 +80,6 @@ function runSequence (commands=false){
         } else {
             // declare finished process after completed sequence
             ongoing_process = false;
-            console.log(ongoing_process);
             console.log("Webhook callback sequence Completed.");
         }
     });
@@ -90,6 +89,6 @@ function runSequence (commands=false){
 
 // Start //
 function start_gatsby_webhook_listener(){
-    gatsbyWebhookHelper.listen( WEBHOOK_PORT, () => console.log( 'Node Webhook helper started on port 9000.' ) );
+    gatsbyWebhookHelper.listen( WEBHOOK_PORT, () => console.log( 'Node Webhook helper started on port '+String(WEBHOOK_PORT) ) );
 }
 start_gatsby_webhook_listener();
