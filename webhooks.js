@@ -21,12 +21,10 @@ const quickRebuildSequence = [
 // You can also create your custom callback terminal sequences...
 
 // Routing (Gatsby Update/Re-build sequences) //
-// Default delay is 120s = build will trigger only after inactivity for 2 minutes, to not repeat the same thing multiple times.
+// Default delay is 120 and 30s respectively = build will trigger only after inactivity for 2 minutes, to not to repeat the same thing multiple times.
 createGatsbyWebhook('/clean_gatsby_rebuild/', cleanRebuildSequence, 120000)
 createGatsbyWebhook('/quick_gatsby_rebuild/', quickRebuildSequence, 30000)
 // You can also create custom webhook callbacks with your custom sequences...
-
-
 
 // FUNCTIONS //
 
@@ -41,15 +39,12 @@ function createGatsbyWebhook(endpoint, sequence, delay = 15000){
             console.log("Initializing a Webhook sequence.");
             ongoing_process = true;
             console.log("Countdown of "+delay+"ms started...");
-             
             setTimeout(()=>{runSequence(sequence)}, delay);
             res.sendStatus( 200 );
-
         } else {
             console.log ('Sorry, already running a sequence. Try again in few minutes.');
         }  
-    });
-    
+    });   
 }
 
 /* FUNCTION: Run Terminal Sequence.
@@ -57,14 +52,12 @@ function createGatsbyWebhook(endpoint, sequence, delay = 15000){
 */
 function runSequence (commands=false){
     if(commands === false) return false;
-
     var commandArr = [...commands];
     let newCommand = commandArr[0];
     commandArr.shift();
     console.log('Running "'+newCommand+'"');
     // Execute terminal command
     if (!newCommand || newCommand.trim() === "") return false;
-
     exec(String(newCommand), (error, stdout, stderr) => {
         if (error) {
             console.log(`error: ${error.message}`);
@@ -83,7 +76,6 @@ function runSequence (commands=false){
             console.log("Webhook callback sequence Completed.");
         }
     });
-
     return true;
 }
 
