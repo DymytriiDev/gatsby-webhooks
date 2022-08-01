@@ -1,6 +1,8 @@
 # gatsby-webhooks
 Customizable webhook catcher for Gatsby websites.
 Rebuild your Gatsby website automatically running this snippet on your server.
+You can add custom commands and/or sequences of commands to be able to run different types of custom rebuilds.
+The use cases actually go far beyond Gatsby, this is an universal webhook catcher able to run custom terminal commands.
 
 ### Requirements
 - Gatsby
