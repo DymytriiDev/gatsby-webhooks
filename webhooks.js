@@ -18,9 +18,9 @@ const quickRebuildSequence = [
     "gatsby build"
     // Add custom commands here
 ];
-// You can also create your custom callback terminal sequences...
+// You can also create your custom callback terminal command sequences...
 
-// Routing (Gatsby Update/Re-build sequences) //
+// Routing with callback terminal command sequences //
 // Default delay is 120 and 30s respectively = build will trigger only after inactivity for 2 minutes, to not to repeat the same thing multiple times.
 createGatsbyWebhook('/clean_gatsby_rebuild/', cleanRebuildSequence, 120000)
 createGatsbyWebhook('/quick_gatsby_rebuild/', quickRebuildSequence, 30000)
@@ -28,10 +28,14 @@ createGatsbyWebhook('/quick_gatsby_rebuild/', quickRebuildSequence, 30000)
 
 // FUNCTIONS //
 
-/* FUNCTION: Create Gatsby webhook route.
-    endpoint(string) "/test/" - endpoint path
-    sequence(array) [string, ...] - callback commands, will be executed synchronously in order, same as "commands" in runSequence()
-    delay(int) - delay in ms. The action will be fired only after inactivity of receiving the same request within delay period.
+/* 
+    FUNCTION: Create Gatsby webhook route.
+    Accepts:
+        endpoint(string) "/test/" - endpoint path
+        sequence(array) [string, ...] - callback commands, will be executed synchronously in order, same as "commands" in runSequence()
+        delay(int) - delay in ms. The action will be fired only after inactivity of receiving the same request within delay period.
+    Returns:
+        HTTP 200 OK || console.log
 */
 function createGatsbyWebhook(endpoint, sequence, delay = 15000){
     gatsbyWebhookHelper.post( endpoint, ( req, res ) => {
@@ -47,8 +51,12 @@ function createGatsbyWebhook(endpoint, sequence, delay = 15000){
     });   
 }
 
-/* FUNCTION: Run Terminal Sequence.
-    commands(array) [string, ...] - callback commands, will be executed synchronously in order.
+/* 
+    FUNCTION: Run Terminal Sequence.
+    Accepts:
+        commands(array || false) [string, ...] - callback commands, will be executed synchronously in order.
+    Returns:
+        status(boolean) - success is true, failure is false
 */
 function runSequence (commands=false){
     if(commands === false) return false;
@@ -78,6 +86,8 @@ function runSequence (commands=false){
     });
     return true;
 }
+
+// /FUNCTIONS //
 
 // Start //
 function start_gatsby_webhook_listener(){
