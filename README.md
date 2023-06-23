@@ -8,11 +8,7 @@ The use cases actually go far beyond Gatsby, **this is an universal webhook catc
 - Gatsby
 - Express.js
 ### Usage
-Install Express if you don't have it yet:
-```
-npm install express
-```
-Place webhooks.js inside Gatsby project root folder, then:
+Place webhooks.js inside Gatsby project's root folder, then:
 ```
 node webhooks.js
 ```
